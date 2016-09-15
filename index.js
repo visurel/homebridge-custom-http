@@ -7,7 +7,7 @@ var app = express();
 	module.exports = function(homebridge){
 		Service = homebridge.hap.Service;
 		Characteristic = homebridge.hap.Characteristic;
-		homebridge.registerAccessory("homebridge-http", "Http", HttpAccessory);
+		homebridge.registerAccessory("homebridge-custom-http", "Custom-Http", HttpAccessory);
 	}
 
 

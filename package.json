@@ -1,7 +1,7 @@
 {
-  "name": "homebridge-http",
-  "version": "0.0.9",
-  "description": "http(s) plugin for Homebridge: https://github.com/nfarina/homebridge",
+  "name": "homebridge-custom-http",
+  "version": "0.0.2",
+  "description": "http(s) custom plugin for Homebridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
     "homebridge-plugin"
@@ -11,7 +11,7 @@
     "homebridge": ">=0.2.0"
   },
   "author": {
-    "name": "Adrian Rudman"
+    "name": "Martin"
   },
   "contributors": [
     {
@@ -19,11 +19,14 @@
     },
     {
       "name": "David Parry"
+    },
+    {
+      "name": "Adrian Rudman"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/rudders/homebridge-http.git"
+    "url": "git://github.com/EinArzt/homebridge-custom-http.git"
   },
   "dependencies": {
     "express": "^4.14.0",
