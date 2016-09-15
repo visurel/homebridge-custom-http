@@ -78,6 +78,7 @@ var app = express();
                 		that.log('HTTP get power function failed: %s', error.message);
 		                callback(error);
             		} else {
+									console.log('response: ', response);
 						done(null, body);
             		}
         		})
