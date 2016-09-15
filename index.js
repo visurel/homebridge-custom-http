@@ -256,6 +256,39 @@ var app = express();
 		}.bind(this));
 	},
 
+	setTargetPosition: function(level, callback) {
+		this.log('Setting Target Position to: %s', level);
+
+		/*if (!this.brightness_url) {
+			this.log.warn("Ignoring request; No brightness url defined.");
+			callback(new Error("No brightness url defined."));
+			return;
+		}*/
+
+		if (level < 10) {
+			level = "00" + level;
+		} else if(level < 100) {
+			level = "0" + level;
+		}
+
+		this.log('Modified Level: %s', level);
+
+		var url = this.brightness_url.replace("%b", level);
+
+		//this.log("Setting brightness to %s", level);
+		//var url = this.brightness_url;
+		this.httpRequest(url, "", this.http_brightness_method, this.username, this.password, this.sendimmediately, function(error, response, body) {
+		if (error) {
+			this.log('HTTP set target function failed: %s', error);
+			//callback(error);
+			callback();
+		} else {
+			this.log('HTTP set target function succeeded!');
+			callback();
+		}
+		}.bind(this));
+	},
+
 	identify: function(callback) {
 		this.log("Identify requested!");
 		callback(); // success
@@ -275,6 +308,37 @@ var app = express();
 		.setCharacteristic(Characteristic.SerialNumber, "HTTP Serial Number");
 
 		switch (this.service) {
+		case "WindowCovering":
+			that.log(Service);
+			this.windowCoveringService = new Service.WindowCovering(this.name);
+			switch (this.switchHandling) {
+				//Power Polling
+				case "yes":
+					/*this.windowCoveringService
+			        .getCharacteristic(Characteristic.CurrentPosition)
+			        .on('get', this.getCurrentPosition.bind(this));
+*/
+			    this.windowCoveringService
+			        .getCharacteristic(Characteristic.TargetPosition)
+			        //.on('get', this.getTargetPosition.bind(this))
+			        .on('set', this.setTargetPosition.bind(this));
+			  /*
+			    this.windowCoveringService
+			        .getCharacteristic(Characteristic.PositionState)
+			        .on('get', this.getPositionState.bind(this));*/
+					break;
+				case "realtime":
+					this.windowCoveringService
+					.getCharacteristic(Characteristic.On)
+					.on('get', function(callback) {callback(null, that.state)})
+					.on('set', this.setPowerState.bind(this));
+					break;
+				default	:
+					this.windowCoveringService
+					.getCharacteristic(Characteristic.On)
+					.on('set', this.setPowerState.bind(this));
+					break;}
+					return [this.windowCoveringService];
 		case "Switch":
 			this.switchService = new Service.Switch(this.name);
 			switch (this.switchHandling) {
