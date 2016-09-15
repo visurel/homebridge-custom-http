@@ -42,7 +42,7 @@ var app = express();
 			var powerurl = this.status_url;
 
 			app.get('/status/1/:binaryState', function (req, res) {
-				console.log('URL aufgerufen');
+				that.log('URL aufgerufen');
 			  var binaryState = parseInt(req.params.binaryState);
 				that.state = binaryState > 0;
 
@@ -50,7 +50,7 @@ var app = express();
 			});
 
 			app.listen(4200, function () {
-			  console.log('Example app listening on port 4200!');
+			  that.log('Example app listening on port 4200!');
 			});
 
 			function tellStatus() {
@@ -78,14 +78,14 @@ var app = express();
                 		that.log('HTTP get power function failed: %s', error.message);
 		                callback(error);
             		} else {
-									console.log('response: ', response);
+									that.log('response: ', response);
 						done(null, body);
             		}
         		})
 			}, {longpolling:true,interval:300,longpollEventName:"statuspoll"});
 
 		statusemitter.on("statuspoll", function(data) {
-			console.log('polled status');
+			that.log('polled status');
 		});
         /*	var binaryState = parseInt(data);
 	    	that.state = binaryState > 0;
@@ -175,11 +175,13 @@ var app = express();
 
 		this.httpRequest(url, body, this.http_method, this.username, this.password, this.sendimmediately, function(error, response, responseBody) {
 			if (error) {
-			this.log('HTTP set power function failed: %s', error.message);
-			callback(error);
+				this.log('HTTP set power function failed: %s', error.message);
+				//callback(error);
+				this.log('Proceeded anyways.');
+				callback();
 			} else {
-			this.log('HTTP set power function succeeded!');
-			callback();
+				this.log('HTTP set power function succeeded!');
+				callback();
 			}
 		}.bind(this));
 	},
@@ -197,7 +199,9 @@ var app = express();
 	this.httpRequest(url, "", "GET", this.username, this.password, this.sendimmediately, function(error, response, responseBody) {
 	if (error) {
 		this.log('HTTP get power function failed: %s', error.message);
-		callback(error);
+		this.log('Proceeded anyways.');
+		//callback(error);
+		callback();
 	} else {
 		var binaryState = parseInt(responseBody);
 		var powerOn = binaryState > 0;
