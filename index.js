@@ -203,7 +203,12 @@ var app = express();
 		//callback(error);
 		callback();
 	} else {
-		var binaryState = parseInt(responseBody);
+               if (responseBody.includes("ACTIVE")) {
+                        var isMotionActive = responseBody.includes("ACTIVE");   // Added support for motion http response for ON
+                        var binaryState = Number(isMotionActive);
+                } else {
+                        var binaryState = parseInt(responseBody);
+                }
 		var powerOn = binaryState > 0;
 		this.log("Power state is currently %s", binaryState);
 		callback(null, powerOn);
